@@ -26,3 +26,13 @@ app.security = Security(app, user_datastore)
 @app.route("/", methods=["GET"])
 def startPage():
     return render_template("baseTemplate.html")
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

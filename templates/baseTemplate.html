@@ -1,1 +1,268 @@
-It's working!
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <style>
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent background for nav */
+            position: fixed;
+            /* Fixed at the top */
+            width: 300%;
+            /* Full width */
+            top: 0;
+            /* Align to top */
+            left: 0;
+            /* Align to left */
+            z-index: 1000;
+            /* Ensure it's on top */
+        }
+
+        /* Display list items inline and add padding for spacing */
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        /* Style links to look more appealing */
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 8px 15px;
+        }
+
+        /* Add a hover effect to links */
+        nav ul li a:hover {
+            color: #4CAF50;
+        }
+
+        /* Make sure that the rest of the content has padding from the top so it doesn't hide behind the fixed navbar */
+        body {
+            padding-top: 50px;
+            /* Adjust the value based on your header's height */
+        }
+    </style>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('/static/images/bild.png');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 90vh;
+        }
+
+        .header-title {
+            margin-bottom: 20px;
+            /* Space between the header and the box */
+            text-align: center;
+        }
+
+        .header-title h1 {
+            color: #000205;
+            text-shadow: 2px 2px 5px rgb(10, 102, 102);
+            font-size: 3rem;
+            /* Adjust font size as needed */
+        }
+
+        .container {
+            background-color: #ffffff35;
+            padding: 120px;
+            /* Adjust padding as needed */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(190, 223, 240, 0.911);
+            width: 100%;
+            /* Adjust width as needed, or remove for automatic sizing */
+            max-width: 600px;
+            /* Adjust max-width for a smaller form */
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            font-size: 3rem;
+            /* Smaller font size for the heading */
+        }
+
+        h1 {
+            color: #4a0e0e;
+            text-align: center;
+            font-size: 3rem;
+            /* Smaller font size for the heading */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            /* Space between form elements */
+        }
+
+        input[type="file"] {
+
+            border: 1px solid black;
+            outline-style: solid;
+            outline-color: rgb(3, 0, 0);
+            outline-width: 2px;
+            padding: 6px 12px;
+            /* Smaller padding */
+            cursor: pointer;
+            font-size: 1rem;
+            /* Smaller font size */
+        }
+
+        input[type="submit"] {
+            background-color: #57b5eb;
+            color: rgb(9, 0, 0);
+            padding: 10px 20px;
+            /* Smaller padding */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            /* Smaller font size */
+        }
+
+        .footer {
+            grid-area: footer;
+            color: #b8d0f4;
+            background-color: var(--header-back-color);
+            padding-right: 30px;
+            position: absolute;
+            bottom: 8px;
+            right: 5px;
+            font-size: 18px;
+
+        }
+
+        .header,
+        .footer {
+            display: flex;
+            align-items: right;
+            justify-content: space-between;
+            background-color: var(--header-back-color);
+        }
+
+        input[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+
+        .options-group {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+
+        .options-group button {
+            padding: 15px 50px;
+            border: 2px solid #00050a;
+            background-color: #65b3f3;
+            color: #000305;
+            cursor: pointer;
+            border-radius: 5px;
+            outline: none;
+            /* Removes the focus outline */
+            transition: background-color 0.3s, color 0.3s;
+            /* Smooth transition for hover effect */
+        }
+
+        .options-group button:hover,
+        .options-group button:focus {
+            background-color: #4cae4c;
+            color: #fff;
+        }
+
+        /* Hide the default radio button */
+        .options-group input[type="radio"] {
+            display: none;
+        }
+
+        /* Styling when the radio button is checked */
+        .options-group input[type="radio"] {
+            background-color: #4cae4c;
+            color: #fff;
+            border-color: #007bff;
+        }
+
+        .header-title h3 {
+            color: #000205;
+            text-shadow: 2px 2px 5px rgb(10, 102, 102);
+            font-size: 1.5rem;
+            /* Adjust font size as needed */
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="header-title">
+        <h1>Welcome To Face Recognition</h1>
+    </div>
+    <div class="container">
+        <div class="header-title">
+            <h3>What do you want to know about the person? <br>Please select below before uploading picture</h3>
+        </div>
+        <div class="options-group">
+            <input type="radio" id="race" name="attribute" value="race" autocomplete="off"
+                onclick="updateUserChoice('race')">
+            <button type=" button">ETHNICITY</button>
+
+            <input type="radio" id="age" name="attribute" value="age" autocomplete="off"
+                onclick="updateUserChoice('age')">
+            <button type=" button">AGE</button>
+
+            <input type="radio" id="gender" name="attribute" value="gender" autocomplete="off"
+                onclick="updateUserChoice('gender')">
+            <button type=" button">GENDER</button>
+        </div>
+        <h2>Upload an Image</h2>
+        <form id="imageUploadForm" action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <input type="hidden" name="user_choice" id="userChoiceInput">
+            <input type="submit" value="See result">
+        </form>
+
+        <div class="result">
+            {% block title %}
+            {% endblock %}
+        </div>
+    </div>
+    <div>
+        <footer class="footer">
+            {% block footer %}
+            <div style="font-size: larger;" class="footer__copyright">&copy; 2024 Face Recognition, With Any System
+                Error Please Contact Us.
+            </div>
+            {% endblock %}
+        </footer>
+    </div>
+</body>
+
+<script>
+    function updateUserChoice(choice) {
+        // Set the hidden input field value
+        document.getElementById('userChoiceInput').value = choice;
+
+        // Submitting the form
+        document.getElementById('imageUploadForm').submit();
+    }
+</script>
+
+</html>

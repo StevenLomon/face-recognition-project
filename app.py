@@ -1,4 +1,3 @@
-# import requests
 from flask import Flask, render_template, request, redirect, flash
 from flask_migrate import Migrate, upgrade
 from flask_security import (
@@ -37,6 +36,18 @@ app.security = Security(app, user_datastore)
 
 @app.route("/", methods=["GET"])
 def startPage():
+    return render_template("baseTemplate.html")
+
+
+@app.route("/predict", methods=["GET", "POST"])
+def predictFromPicture():
+    if request.method == "POST":
+        # Retrieve the selected radio button value (user_choice)
+        user_choice = request.form.get("user_choice")
+        return render_template("result.html", user_choice=user_choice)
+
+    # For the initial GET request, you might want to handle it differently
+    # For example, redirect to the upload form or render a different template
     return render_template("baseTemplate.html")
 
 

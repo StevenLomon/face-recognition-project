@@ -2,7 +2,7 @@ import os
 
 
 class ConfigDebug:
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://steven:Killzone1@python22steven.mysql.database.azure.com/bank2.0"  # File-based SQL database
+    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:6fGMA/AHC8!A-UH@localhost/face-recognition"  # File-based SQL database
     SECRET_KEY = "SDFA11#"
     SECURITY_PASSWORD_SALT = os.environ.get(
         "SECURITY_PASSWORD_SALT", "996196728467290652074888210601662039592"

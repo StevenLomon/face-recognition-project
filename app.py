@@ -1,4 +1,4 @@
-import requests
+# import requests
 from flask import Flask, render_template, request, redirect, flash
 from flask_migrate import Migrate, upgrade
 from flask_security import (

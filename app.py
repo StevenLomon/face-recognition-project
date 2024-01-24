@@ -39,16 +39,26 @@ def startPage():
     return render_template("baseTemplate.html")
 
 
-@app.route("/predict", methods=["GET", "POST"])
-def predictFromPicture():
-    if request.method == "POST":
-        # Retrieve the selected radio button value (user_choice)
-        user_choice = request.form.get("user_choice")
-        return render_template("result.html", user_choice=user_choice)
+@app.route("/upload", methods=["POST"])
+def upload_image():
+    # Handle image upload here (your teammate's responsibility)
+    # ...
 
-    # For the initial GET request, you might want to handle it differently
-    # For example, redirect to the upload form or render a different template
-    return render_template("baseTemplate.html")
+    return "Image uploaded successfully"
+
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    # Get the user's choice from the request
+    choice = request.json.get(
+        "choice"
+    )  # Adjust based on how the data is sent from the frontend
+
+    # Use the choice to load the corresponding model and make predictions
+    # ...
+
+    # Return prediction results (you may want to use jsonify for a more structured response)
+    return f"Predicted result for {choice}"
 
 
 if __name__ == "__main__":

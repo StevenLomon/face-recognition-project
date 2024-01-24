@@ -5,5 +5,42 @@ Result page for {{ user_choice }}
 {% endblock %}
 
 {% block content %}
-<h3>Result: {{ user_choice }} </h3>
+<h3>Result:</h3>
+<p id="result-choice">Choice: </p>
 {% endblock %}
+
+<script>
+    console.log("Script loaded successfully");
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Set up event listener for form submission
+        document.querySelector("form").addEventListener("submit", function (event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Get the selected radio button value
+            var choice = document.querySelector('input[name="attribute"]:checked');
+            if (choice) {
+                console.log("Choice:", choice.value);
+
+                // Extract the attribute from the URL
+                var url = window.location.href;
+                var attributeIndex = url.indexOf("attribute=");
+                if (attributeIndex !== -1) {
+                    var attribute = url.substring(attributeIndex + 9);
+                    console.log("Attribute from URL:", attribute);
+
+                    // Update the content of the result-choice paragraph
+                    document.getElementById('result-choice').innerText = "Choice: " + attribute;
+                } else {
+                    console.log("Attribute not found in the URL");
+                }
+            } else {
+                console.log("No radio button selected");
+            }
+
+            // Add additional processing or form submission if needed
+            // ...
+        });
+    });
+</script>

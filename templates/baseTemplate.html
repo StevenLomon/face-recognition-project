@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Upload</title>
+    <!-- Add this line in your head section -->
+
     <style>
         nav ul {
             list-style-type: none;
@@ -216,33 +218,39 @@
         <h1>Welcome To Face Recognition</h1>
     </div>
     <div class="container">
+        <!-- First form for image upload -->
+        <h2>Upload an Image</h2>
+        <form id="imageUploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <input type="submit" value="Upload Image">
+        </form>
         <div class="header-title">
             <h3>What do you want to know about the person? <br>Please select below before uploading picture</h3>
         </div>
+
         <div class="options-group">
-            <input type="radio" id="race" name="attribute" value="race" autocomplete="off"
-                onclick="updateUserChoice('race')">
-            <button type=" button">ETHNICITY</button>
+            <form id="choiceForm">
+                <input type="radio" id="race" name="attribute" value="race" style="display: none"
+                    onclick="selectChoice('race')">
+                <button type="button" class="option-btn" onclick="clickRadioButton('race')">ETHNICITY</button>
 
-            <input type="radio" id="age" name="attribute" value="age" autocomplete="off"
-                onclick="updateUserChoice('age')">
-            <button type=" button">AGE</button>
+                <input type="radio" id="age" name="attribute" value="age" style="display: none"
+                    onclick="selectChoice('age')">
+                <button type="button" class="option-btn" onclick="clickRadioButton('age')">AGE</button>
 
-            <input type="radio" id="gender" name="attribute" value="gender" autocomplete="off"
-                onclick="updateUserChoice('gender')">
-            <button type=" button">GENDER</button>
+                <input type="radio" id="gender" name="attribute" value="gender" style="display: none"
+                    onclick="selectChoice('gender')">
+                <button type="button" class="option-btn" onclick="clickRadioButton('gender')">GENDER</button>
+
+                <input type="button" value="See Result" onclick="handleResultButtonClick()">
+            </form>
         </div>
-        <h2>Upload an Image</h2>
-        <form id="imageUploadForm" action="/predict" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" required>
-            <input type="hidden" name="user_choice" id="userChoiceInput">
-            <input type="submit" value="See result">
-        </form>
 
-        <div class="result">
-            {% block title %}
-            {% endblock %}
-        </div>
+        <!-- Display result dynamically -->
+        <h2>Result:</h2>
+        <p id="result-choice">Choice: </p>
+        <p id="result-prediction">Prediction: </p>
+
     </div>
     <div>
         <footer class="footer">
@@ -253,16 +261,50 @@
             {% endblock %}
         </footer>
     </div>
+
+    <script>
+        function clickRadioButton(attribute) {
+            // Click the corresponding radio button
+            document.getElementById(attribute).click();
+        }
+
+        var selectedChoice = null; // Variable to store the selected choice
+
+        function selectChoice(choice) {
+            // Update the selectedChoice variable
+            selectedChoice = choice;
+        }
+
+        function handleResultButtonClick() {
+            if (selectedChoice) {
+                // Update the content of the result-choice paragraph
+                document.getElementById('result-choice').innerText = "Choice: " + selectedChoice;
+
+                // Send the choice to the backend (you can use AJAX/fetch here)
+                // Example:
+                fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ choice: selectedChoice }),
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        // Handle the response from the backend
+                        console.log(data);
+                        document.getElementById('result-prediction').innerText = "Prediction: " + data;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                console.log("No button selected");
+            }
+        }
+    </script>
+
+
 </body>
-
-<script>
-    function updateUserChoice(choice) {
-        // Set the hidden input field value
-        document.getElementById('userChoiceInput').value = choice;
-
-        // Submitting the form
-        document.getElementById('imageUploadForm').submit();
-    }
-</script>
 
 </html>

@@ -1,0 +1,111 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('/static/images/bild.png');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+}
+
+/* Navigation Styles */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    width: 300%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 8px 15px;
+}
+
+nav ul li a:hover {
+    color: #4CAF50;
+}
+
+/* Container Styles */
+.container {
+    background-color: #ffffff35;
+    padding: 120px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(190, 223, 240, 0.911);
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+input[type="file"] {
+    border: 1px solid black;
+    outline-style: solid;
+    outline-color: rgb(3, 0, 0);
+    outline-width: 2px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+input[type="submit"] {
+    background-color: #57b5eb;
+    color: rgb(9, 0, 0);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+input[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+/* Additional Styles */
+.header-title h1, .header-title h3 {
+    text-align: center;
+    color: #000205;
+    text-shadow: 2px 2px 5px rgb(10, 102, 102);
+}
+
+.header-title h1 {
+    font-size: 3rem;
+}
+
+.header-title h3 {
+    font-size: 1.5rem;
+}
+
+/* Footer Styles */
+.footer {
+    grid-area: footer;
+    color: #b8d0f4;
+    background-color: var(--header-back-color);
+    padding-right: 30px;
+    position: absolute;
+    bottom: 8px;
+    right: 5px;
+    font-size: 18px;
+}
+

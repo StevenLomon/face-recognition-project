@@ -14,18 +14,19 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Load your trained model
-model_path = r"C:\Users\46722\Downloads\mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5"
+@app.route('/')
+def index():
+    return render_template('home.html') 
 
 def get_model():
     global model
-    model = load_model('best_race_model.h5')
+    model = load_model('/Users/yari/2023/Applicerad_AI/Classification project/face-recognition-project/models/best_race_model.h5')
     print('*Model loaded*')
-
+get_model()
 def preprocessing_image(image, target_size):
     if image.mode != 'RGB':
         image = image.convert('RGB')
-    image = image.resize(taget_size)
+    image = image.resize(target_size)
     image = img_to_array(image)
     image = np.expand_dims(image, axis = 0)
     
@@ -35,13 +36,11 @@ print('*loading keras model...')
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Check if a file is received
-    image = request.files['image']
-    if image.filename == '':
-        return 'No selected file'
-    decoded = base64.b64decode(image)
+    message = request.get_json(force=True)
+    encoded = message['image']
+    decoded = base64.b64decode(encoded)
     image = Image.open(io.BytesIO(decoded))
-    processed_image = preprocessing_image(image, target_size =(224, 224))
+    processed_image = preprocessing_image(image, target_size =(128, 128))
 
     prediction = model.predict(processed_image).tolist()
 
@@ -54,42 +53,6 @@ def predict():
     return jsonify(response)
 
 
-
-
-
-
-
-
-
-
-
-# @app.route('/', methods=['GET'])
-# def index():
-#     # Render the main page
-#     return render_template('home.html')
-
-
-# @app.route('/about', methods=['GET'])
-# def about():
-#     # Render the about page
-#     return render_template('about.html')
-
-# @app.route('/contact', methods=['GET'])
-# def contact():
-#     # Render the contact page
-#     return render_template('contact.html')
-
-# @app.route('/upload')
-# def upload():
-#     return render_template('upload_form.html')
-
-
-# @app.route('/predict', methods=['POST'])
-# def predict():
-#     # Check if a file is received
-#     file = request.files['file']
-#     if file.filename == '':
-#         return 'No selected file'
 
 
 

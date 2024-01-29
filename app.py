@@ -56,6 +56,7 @@ def predict():
 
     # Use the choice to load the corresponding model and make predictions
     # ...
+    print(f"The user chose {choice}. Let's feed it to the model!")
 
     # Return prediction results (you may want to use jsonify for a more structured response)
     return f"Predicted result for {choice}"

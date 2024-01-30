@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template, jsonify
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+from keras.preprocessing.image import array_to_img
+import os
 import base64
 import io
 from PIL import Image 
@@ -11,6 +13,8 @@ from keras.models import load_model
 from keras.preprocessing.image import ImageDataGenerator
 from keras.preprocessing.image import img_to_array
 import numpy as np
+from flask import Flask, jsonify, request, url_for
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -20,8 +24,9 @@ def index():
 
 def get_model():
     global model
-    model = load_model('/Users/yari/2023/Applicerad_AI/Classification project/face-recognition-project/models/best_race_model.h5')
+    model = load_model('/Users/yari/2023/Applicerad_AI/fairfacedata/gender_classes/best_gender_model.h5')
     print('*Model loaded*')
+
 get_model()
 def preprocessing_image(image, target_size):
     if image.mode != 'RGB':
@@ -29,10 +34,12 @@ def preprocessing_image(image, target_size):
     image = image.resize(target_size)
     image = img_to_array(image)
     image = np.expand_dims(image, axis = 0)
+    image = image/ 225.0
     
     return image
 
 print('*loading keras model...')
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -40,17 +47,25 @@ def predict():
     encoded = message['image']
     decoded = base64.b64decode(encoded)
     image = Image.open(io.BytesIO(decoded))
-    processed_image = preprocessing_image(image, target_size =(128, 128))
+    processed_image = preprocessing_image(image, target_size =(224, 224))
 
     prediction = model.predict(processed_image).tolist()
 
     response = {
         'prediction': {
-            'Black' : prediction[0][0],
-            'East_Asian': prediction[0][1]
+            'Female': prediction[0][0],
+            'Male': prediction[0][1]
+            # 'Black' : prediction[0][0],
+            # 'East_Asian': prediction[0][1],
+            # 'Indian': prediction[0][1],
+            # 'Latino Hispanic': prediction[0][1],
+            # 'Middle Eastern': prediction[0][1],
+            # 'Southeast Asian': prediction[0][1],
+            # 'White': prediction[0][1],
         }
     }
     return jsonify(response)
+
 
 
 

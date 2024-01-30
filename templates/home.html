@@ -21,21 +21,26 @@
         <h2>Upload an Image</h2>
         <form action="/predict" method="post" enctype="multipart/form-data">
             <input type="file" name="image" required>
-            <input type="submit" value="Upload Image">
+            <input type="submit" value="Predict">
         </form>
         <div class="header-title">
-            <h3>What do you want to know about this person? select below</h3>
+            <!--<h3>What do you want to know about this person? select below</h3> -->
         </div>
         <div class="options-group">
-            <input type="radio" id="race" name="attribute" value="race" autocomplete="off" checked>
+            <!-- <input type="radio" id="race" name="attribute" value="race" autocomplete="off" checked>
             <button type="button">RASE</button>
             
             <input type="radio" id="age" name="attribute" value="age" autocomplete="off">
             <button type="button">AGE</button>
     
             <input type="radio" id="gender" name="attribute" value="gender" autocomplete="off">
-            <button type="button">Gender</button>
+            <button type="button">Gender</button> -->
         </div>
+        <div id="image-display" style="display:none;">
+            <img id="uploaded-image" src="#" alt="Uploaded Image" />
+            <div id="prediction-results"></div>
+        </div>
+        
     </div>
     <div>
         <footer class="footer">

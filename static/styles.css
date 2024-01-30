@@ -1,7 +1,7 @@
 /* General Styles */
 body {
     font-family: 'Arial', sans-serif;
-    background-image: url('/static/images/bild.png');
+    background-image: url('imagies/bild.png');
     background-size: cover;
     background-position: center;
     margin: 0;
@@ -109,3 +109,34 @@ input[type="submit"]:hover {
     font-size: 18px;
 }
 
+/* Styles for Displayed Image */
+#uploaded-image {
+    max-width: 100%; 
+    height: auto; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    margin-bottom: 20px;
+}
+
+
+#prediction-results {
+    font-size: 1.2rem; 
+    color: #333;
+    background-color: #f8f8f8; 
+    border: 1px solid #ddd; 
+    padding: 15px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    max-width: 600px;
+    width: 100%;
+    margin: auto; 
+    text-align: left; 
+}
+
+
+#image-display {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    margin-top: 20px;}

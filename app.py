@@ -25,7 +25,6 @@ def index():
 def get_model():
     global model
     model = load_model('/Users/yari/2023/Applicerad_AI/fairfacedata/gender_classes/best_gender_model.h5')
-    print('*Model loaded*')
 
 get_model()
 def preprocessing_image(image, target_size):
@@ -38,7 +37,7 @@ def preprocessing_image(image, target_size):
     
     return image
 
-print('*loading keras model...')
+
 
 
 @app.route('/predict', methods=['POST'])

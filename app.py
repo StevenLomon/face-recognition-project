@@ -1,20 +1,11 @@
 from flask import Flask, request, render_template, jsonify
 from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
-from keras.preprocessing.image import array_to_img
-import os
 import base64
 import io
 from PIL import Image 
-import keras 
-from keras import backend as K 
-from keras.models import Sequential
 from keras.models import load_model
-from keras.preprocessing.image import ImageDataGenerator
 from keras.preprocessing.image import img_to_array
 import numpy as np
-from flask import Flask, jsonify, request, url_for
-from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -22,11 +13,15 @@ app = Flask(__name__)
 def index():
     return render_template('home.html') 
 
-def get_model():
-    global model
-    model = load_model('/Users/yari/2023/Applicerad_AI/fairfacedata/gender_classes/best_gender_model.h5')
+def get_model(model_choice) ->object:
+    if model_choice == 'gender':
+        model = load_model('/Users/yari/2023/Applicerad_AI/fairfacedata/gender_classes/best_gender_model.h5')
+    if model_choice == 'age':
+        model = load_model('/Users/yari/2023/Applicerad_AI/fairfacedata/age_classes/best_age_model.h5')
+    if model_choice == 'race':
+        model = load_model('/Users/yari/2023/Applicerad_AI/fairfacedata/race_classes/best_race_model.h5')
+    return model
 
-get_model()
 def preprocessing_image(image, target_size):
     if image.mode != 'RGB':
         image = image.convert('RGB')
@@ -37,34 +32,67 @@ def preprocessing_image(image, target_size):
     
     return image
 
+def get_target_size(model_choice) -> str:
+    if model_choice == 'gender':
+        target_size = (224, 224)
+    else:
+        target_size = (128, 128)
+    return target_size
+    
 
 
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    message = request.get_json(force=True)
-    encoded = message['image']
-    decoded = base64.b64decode(encoded)
-    image = Image.open(io.BytesIO(decoded))
-    processed_image = preprocessing_image(image, target_size =(224, 224))
+    try:
+        data = request.get_json()
+        model_choice = data.get('type')
+        encoded_image = data.get('image')
+        model = get_model(model_choice)
+        if model is None:
+            return jsonify({'error': 'Model could not be loaded'}), 500
+        decoded = base64.b64decode(encoded_image)
+        image = Image.open(io.BytesIO(decoded))
+        target_size = get_target_size(model_choice= model_choice)
+        processed_image = preprocessing_image(image, target_size)
 
-    prediction = model.predict(processed_image).tolist()
-
-    response = {
-        'prediction': {
-            'Female': prediction[0][0],
-            'Male': prediction[0][1]
-            # 'Black' : prediction[0][0],
-            # 'East_Asian': prediction[0][1],
-            # 'Indian': prediction[0][1],
-            # 'Latino Hispanic': prediction[0][1],
-            # 'Middle Eastern': prediction[0][1],
-            # 'Southeast Asian': prediction[0][1],
-            # 'White': prediction[0][1],
-        }
-    }
-    return jsonify(response)
-
+        prediction = model.predict(processed_image).tolist()
+    
+        if model_choice == 'gender':
+            response = {
+                'prediction': {
+                    'Female': prediction[0][0],
+                    'Male': prediction[0][1]
+                }
+            }
+        elif model_choice == 'race':
+            response = {
+                'prediction': {
+                    'Black' : prediction[0][0],
+                    'East_Asian': prediction[0][1],
+                    'Indian': prediction[0][1],
+                    'Latino Hispanic': prediction[0][1],
+                    'Middle Eastern': prediction[0][1],
+                    'Southeast Asian': prediction[0][1],
+                    'White': prediction[0][1],
+                }
+            }
+        elif model_choice == 'age':
+            response = {
+                'prediction': {
+                    '20-29' : prediction[0][0],
+                    '30-39': prediction[0][1],
+                    '40-49': prediction[0][1],
+                    '50-59': prediction[0][1],
+                    '60-69': prediction[0][1],
+                }
+            }
+        else:
+            raise ValueError('No response please check if your model choice')
+            
+        return jsonify(response)
+    except Exception as e:
+        print(f'Failed to load model{e}')
 
 
 

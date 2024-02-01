@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, jsonify
-from tensorflow.keras.models import load_model
 import base64
 import io
 from PIL import Image 
@@ -19,7 +18,7 @@ def get_model(model_choice) ->object:
     if model_choice == 'age':
         model = load_model('/Users/yari/2023/Applicerad_AI/fairfacedata/age_classes/best_age_model.h5')
     if model_choice == 'race':
-        model = load_model('/Users/yari/2023/Applicerad_AI/fairfacedata/race_classes/best_race_model.h5')
+        model = load_model('/Users/yari/2023/Applicerad_AI/fairfacedata/race_classes/race_model.h5')
     return model
 
 def preprocessing_image(image, target_size):
@@ -70,11 +69,11 @@ def predict():
                 'prediction': {
                     'Black' : prediction[0][0],
                     'East_Asian': prediction[0][1],
-                    'Indian': prediction[0][1],
-                    'Latino Hispanic': prediction[0][1],
-                    'Middle Eastern': prediction[0][1],
-                    'Southeast Asian': prediction[0][1],
-                    'White': prediction[0][1],
+                    'Indian': prediction[0][2],
+                    'Latino Hispanic': prediction[0][3],
+                    'Middle Eastern': prediction[0][4],
+                    'Southeast Asian': prediction[0][5],
+                    'White': prediction[0][6],
                 }
             }
         elif model_choice == 'age':
@@ -82,9 +81,9 @@ def predict():
                 'prediction': {
                     '20-29' : prediction[0][0],
                     '30-39': prediction[0][1],
-                    '40-49': prediction[0][1],
-                    '50-59': prediction[0][1],
-                    '60-69': prediction[0][1],
+                    '40-49': prediction[0][2],
+                    '50-59': prediction[0][3],
+                    '60-69': prediction[0][4],
                 }
             }
         else:
